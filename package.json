@@ -1,13 +1,14 @@
 {
-  "name": "nodetj",
+  "name": "node-logs",
   "version": "1.0.0",
-  "description": "",
+  "description": "使用nodejs实现web数据统计，移动应用统计分析",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build" : "webpack --config webpack.prod.config.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "hatedMe <7548764@qq.com>",
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.5.5",
