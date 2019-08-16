@@ -13,7 +13,7 @@ const ceartUserIdorGetUserId = function() {
 const config = {
 	dm : window.location.host,        // host 
 	uvmark : ceartUserIdorGetUserId(),
-	pvid : "10001" ,		// userid
+	pvid : "800800" ,		// userid
 	url : window.location.pathname ,       // url 	
 	arg : window.location.search ,      // url search
 	ty : 0 ,

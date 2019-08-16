@@ -23,4 +23,5 @@ const connect = () => {
 
 
 exports.client = client;
+exports.redis = client;
 exports.connect = connect;

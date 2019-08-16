@@ -28,4 +28,4 @@ const access_log = new mongoose.Schema({
 },{ versionKey: false });
 
 
-module.exports = mongoose.model('access_log', access_log , 'access_log' );
+module.exports = mongoose.model('access_log', access_log );

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <p>hello Word</p>
+    <h2></h2>
+    <button id="btn">按钮</button>
+
+    <script>
+        var netWork = navigator && navigator.connection && navigator.connection.effectiveType;
+        document.querySelector('h2').innerHTML = netWork;
+    </script>
+
+    <script src="./src/index.js"></script>
+    <script>
+        siteH5.pgv();
+        var btnEl = document.getElementById('btn')
+        btnEl.addEventListener('click' , function (ev) {
+            siteH5.clickStat('BTN_CLICK')
+        },false)
+    </script>
+</body>
+</html>
