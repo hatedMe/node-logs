@@ -30,6 +30,7 @@ router.get('/findnum' , async ctx => {
     ctx.body = "";
 
     const { dm , pvid , uvmark , url , arg , v , scr , lg , tz } = ctx.request.query;
+    console.log( ctx.request.query );
     const ua = ctx.headers['user-agent'];
     const ip = getClientIp(ctx.req);
 
@@ -37,17 +38,16 @@ router.get('/findnum' , async ctx => {
     if( !pvid ) return ;
     // 验证appid是否在已经注册
     
+    
 
-    // 消息生产者
-    const userdataStr = JSON.stringify( { dm , pvid , uvmark ,  url , arg , v , scr , lg , tz , ua , ip } );
-    const redisKey = `WEB_DATA_COUNT_${pvid}`;
+    // 消息生产者  
+    const userdataStr = JSON.stringify( Object.assign({} , { ip , ua } , ctx.request.query) );
+    const redisKey = `WEB_DATA_COUNT`;
     await redis.rpush( redisKey , [ userdataStr ]);
     const lists = await redis.lrangeAsync( redisKey , 0 , -1 );
     redis.expire(redisKey , 1 * 60 * 60 * 24 * 7 );  // 设置过期时间为7天
 
-    // new WebEnvironment(pvid)({
-    //     app_id : pvid
-    // }).save();
+
     
 });
 

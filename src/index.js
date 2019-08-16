@@ -1,6 +1,6 @@
 
 // const BASE_URL = "http://api.djui.cn/tongji/findnum?";
-const BASE_URL = 'http://localhost:3000/tongji/findnum?'; 
+const BASE_URL = 'http://localhost:3005/pingd/front/web?'; 
 const UVMARK = "uvmark";
 
 const ceartUserIdorGetUserId = function() {

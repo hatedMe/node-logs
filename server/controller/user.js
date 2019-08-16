@@ -2,9 +2,9 @@ const config = require('../conf/config');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const { Schema } = require('../DBinit');
-// const User = require('../model/user');
+const APPID_MODEL = require('../model/appid');
 const appIdsModle = require('../model/appid');
-const Redis = require('../redisInit');
+const { redis } = require('../RedisInit');
 const Status = require('../util/response');
 
 
@@ -17,15 +17,21 @@ const createRandom = () => {
 }
 
 class Users {
+
     static async login (ctx , next) {
-        const {name, password} = ctx.request.body;
-        const result = await User.findOne({name, password});
-        if( !name || !password) return ctx.body = Status.error( 400 , '缺少相关参数');
+        const { username , password} = ctx.request.body;
+        if( !username || !password) return ctx.body = Status.error( 400 , '缺少相关参数');
+        const result = await APPID_MODEL.findOne({ username , password : md5( password ) });
         if( !result ) return ctx.body = Status.error( 400 ,'账号密码不对称');
-        const token = jwt.sign({ userInfo: `${name}` }, 'token',{ expiresIn: config.tokenExpiresIn });
-        await Redis.client.set('token', token,'EX', config.tokenExpiresIn);
-        ctx.body = Status.success({token});
+        const token = jwt.sign({ userInfo: `${username}` }, 'token', { expiresIn: 7200 });
+        await redis.set('USER_LOGIN_TOKEN_' + username , token,'EX', 7200 );
+        ctx.body = Status.success({
+            token , 
+            username,
+            expiresIn : 7200
+        });
     }
+
 
     static async register (ctx ,next ) {
         const { name , category , username , password , domain } = ctx.request.body;

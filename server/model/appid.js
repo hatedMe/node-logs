@@ -16,6 +16,6 @@ const appId = new mongoose.Schema({
     versionKey: false , 
 });
 
-appId.index({ appId: 1, create_time: -1 });
+appId.index({ appId: 1, createTime: -1 });
 
 module.exports = mongoose.model('appId', appId );;

@@ -1,30 +1,19 @@
-const fs = require('fs')
 const schedule = require('node-schedule');
-var Redis , { redis } = require('../RedisInit');
-const DB = require('../DBinit');
-const APPID_MODLE = require('../model/appid');
-Redis.connect();
-DB.connect();
-
 
 const rule = new schedule.RecurrenceRule();
 // rule.dayOfWeek = [0, new schedule.Range(1, 6)];
-// rule.hour = globalData.sendTime.EmailHour;
-// rule.minute = globalData.sendTime.EmialMinminute;
+// rule.hour = 12;
+rule.minute = [ 5 , 10 , 15 , 20 , 25 , 32 ,35 , 40 , 45 ,50 ,55 , 60 ];
 
 
-async function init () {
-    const usersLists = await APPID_MODLE.find();
-    for (let index = 0; index < usersLists.length; index++) {
-        console.log(usersLists[index].appid);
-    }
-}
+console.log( new schedule.Range( 10 , 60) );
 
-const scheduleCronstyle = async () =>{
-    await schedule.scheduleJob( "30 * * * * *" , ()=>{
+
+const PvuvipsTask = require('../service/puuvips_task');
+module.exports = {
+    rule, 
+    async task () {
         console.log('提取数据redis数据定时任务执行时间 --------------->' + new Date() );
-        init();
-    });
-}
-
-scheduleCronstyle();
+        await Promise.resolve( PvuvipsTask.getUserRepotDataForRedis() );
+    }
+};
