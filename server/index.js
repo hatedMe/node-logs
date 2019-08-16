@@ -1,0 +1,14 @@
+const Koa = require('koa');
+const Router = require('koa-router');
+const koaBody = require('koa-body')();
+const crypto = require('crypto');
+const Redis = require('./RedisInit');
+const { redis } = require('./RedisInit');
+const DB = require('./DBInit');
+const appIdsModle = require('./model/appid');
+const router = require('./router/index');
+Redis.connect();
+DB.connect();
+const app = new Koa();
+app.use(router.routes()).use(router.allowedMethods());
+app.listen(3005);
