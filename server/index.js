@@ -13,8 +13,6 @@ const app = new Koa();
 app.use(router.routes()).use(router.allowedMethods());
 app.listen(3005);
 
-
-
 // 批量执行定时器
 function getFileList(dir_path) {
     let file_list = []

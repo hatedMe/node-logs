@@ -9,7 +9,7 @@ const auth = { password : config.redisPassword };
 const client = redis.createClient(Object.assign({}, auth, {
     host: config.redisHost,
     port: config.redisPort,
-    db : 1 ,
+    // db : 1 ,
 }));
 
 client.on('error', function(err) {

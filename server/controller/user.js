@@ -1,7 +1,7 @@
 const config = require('../conf/config');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const { Schema } = require('../DBinit');
+const { Schema } = require('../DBInit');
 const APPID_MODEL = require('../model/appid');
 const appIdsModle = require('../model/appid');
 const { redis } = require('../RedisInit');

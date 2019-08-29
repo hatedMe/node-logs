@@ -1,7 +1,7 @@
 const config = require('../conf/config');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const { Schema } = require('../DBinit');
+const { Schema } = require('../DBInit');
 const APPID_MODEL = require('../model/appid');
 const appIdsModle = require('../model/appid');
 const { redis } = require('../RedisInit');
@@ -33,7 +33,7 @@ class Front {
         const redisKey = `WEB_DATA_COUNT`;
         await redis.lpush( redisKey , [ userdataStr ]);
         const lists = await redis.lrangeAsync( redisKey , 0 , -1 );
-        redis.expire(redisKey , 1 * 60 * 60 * 24 * 7 );  // 设置过期时间为7天
+        // redis.expire(redisKey , 1 * 60 * 60 * 24 * 7 );  // 设置过期时间为7天
     }
 
 }

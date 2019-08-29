@@ -2,16 +2,16 @@
 const mongoose = require('mongoose');
 
 const WebEnvironmentSchema = new mongoose.Schema({
-    app_id: { type: String }, // 所属系统
-    create_time: { type: Date, default: Date.now }, // 用户访问时间
+    appId: { type: String }, // 所属系统
+    createTime: { type: Date, default: Date.now }, // 用户访问时间
     url: { type: String }, // 访问页面的url
-    mark_page: { type: String }, // 所有资源页面统一标识 html img css js 用户系统信息等
-    mark_user: { type: String }, // 统一某一时间段用户标识
-    mark_uv: { type: String }, // 统一uv标识
-    browser: { type: String }, // 浏览器名称
-    borwser_version: { type: String }, // 浏览器版本
+    markPage: { type: String }, // 所有资源页面统一标识 html img css js 用户系统信息等
+    uvmark: { type: String }, // 统一某一时间段用户标识
+    uv: { type: String }, // 统一uv标识
+    browserName: { type: String }, // 浏览器名称
+    borwserVersion: { type: String }, // 浏览器版本
     system: { type: String }, // 操作系统
-    system_version: { type: String }, // 系统版本
+    systemVersion: { type: String }, // 系统版本
     ip: { type: String }, // 访问者IP
     county: { type: String }, // 国家
     province: { type: String }, // 省
@@ -21,13 +21,14 @@ const WebEnvironmentSchema = new mongoose.Schema({
     versionKey: false ,
 });
 
-WebEnvironmentSchema.index({ url: 1, create_time: -1 });
-WebEnvironmentSchema.index({ ip: 1, create_time: -1 });
-WebEnvironmentSchema.index({ create_time: -1 });
-WebEnvironmentSchema.index({ mark_page: 1 });
-WebEnvironmentSchema.index({ mark_user: 1 });
+WebEnvironmentSchema.index({ appId: 1, createTime: -1 });
+WebEnvironmentSchema.index({ url: 1, createTime: -1 });
+WebEnvironmentSchema.index({ ip: 1, createTime: -1 });
+WebEnvironmentSchema.index({ createTime: -1 });
+WebEnvironmentSchema.index({ markPage: 1 });
+WebEnvironmentSchema.index({ uvmark: 1 });
 
 
 module.exports = WebEnvironment = function(appId) {
-    return mongoose.model(`web_environment_${appId}`, WebEnvironmentSchema);
+    return mongoose.model(`atomweb_environment_${appId}`, WebEnvironmentSchema);
 };

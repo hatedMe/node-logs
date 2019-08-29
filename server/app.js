@@ -45,7 +45,7 @@ router.get('/findnum' , async ctx => {
     const redisKey = `WEB_DATA_COUNT`;
     await redis.rpush( redisKey , [ userdataStr ]);
     const lists = await redis.lrangeAsync( redisKey , 0 , -1 );
-    redis.expire(redisKey , 1 * 60 * 60 * 24 * 7 );  // 设置过期时间为7天
+    // redis.expire(redisKey , 1 * 60 * 60 * 24 * 7 );  // 设置过期时间为7天
 
 
     

@@ -1,5 +1,5 @@
 
-// const BASE_URL = "http://api.djui.cn/tongji/findnum?";
+// const BASE_URL = "http://api.djui.cn/pingd/front/web?";
 const BASE_URL = 'http://localhost:3005/pingd/front/web?'; 
 const UVMARK = "uvmark";
 

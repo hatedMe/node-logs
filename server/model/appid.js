@@ -18,4 +18,4 @@ const appId = new mongoose.Schema({
 
 appId.index({ appId: 1, createTime: -1 });
 
-module.exports = mongoose.model('appId', appId );;
+module.exports = mongoose.model('appId', appId );
