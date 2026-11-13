@@ -1,0 +1,8 @@
+.git
+.superpowers
+node_modules
+dist
+server
+src
+*.md
+.env

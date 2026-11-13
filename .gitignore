@@ -2,6 +2,8 @@
 *.zip
 node_modules/
 version.json
+.env
+.env.*.local
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -17,3 +19,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 
+/dist
+/docs
