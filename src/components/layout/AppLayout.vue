@@ -34,7 +34,13 @@ function onPreset(preset: RangePreset): void {
 <template>
   <div class="app-layout">
     <aside class="app-sidebar" aria-label="产品菜单">
-      <div class="sidebar-brand">网站统计</div>
+      <div class="sidebar-brand">
+        <span class="brand-mark" aria-hidden="true">N</span>
+        <span class="brand-copy">
+          <strong>网站统计</strong>
+          <small>NODE LOGS / ANALYTICS</small>
+        </span>
+      </div>
       <el-menu
         :default-active="activeKey"
         class="side-menu"
@@ -57,6 +63,7 @@ function onPreset(preset: RangePreset): void {
         >
           ☰
         </el-button>
+        <div class="topbar-kicker">WORKSPACE / 2026</div>
         <el-breadcrumb class="app-crumbs" data-testid="breadcrumb" separator="/">
           <el-breadcrumb-item v-for="c in crumbs" :key="c">{{ c }}</el-breadcrumb-item>
         </el-breadcrumb>

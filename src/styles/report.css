@@ -1,58 +1,17 @@
-/* PV/UV 报表页面样式：桌面双栏，窄屏单栏。 */
-
-.report-page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 16px;
-}
-
-.report-header h1 {
-  margin: 0 0 4px;
-  font-size: 20px;
-}
-
-.report-desc {
-  margin: 0;
-  font-size: 13px;
-  color: var(--el-text-color-secondary);
-}
-
-.report-section {
-  margin-top: 12px;
-}
-
-.report-error .retry-btn {
-  margin-top: 8px;
-}
-
-.chart-card {
-  height: 100%;
-}
-
-/* 筛选区：表单项内容允许换行，避免窄屏溢出。 */
-.report-filters .el-form-item__content {
-  flex-wrap: wrap;
-  row-gap: 8px;
-}
-
-@media (max-width: 768px) {
-  .report-page {
-    padding: 8px;
-  }
-
-  .report-header h1 {
-    font-size: 17px;
-  }
-
-  .report-filters .el-select {
-    width: 100%;
-  }
-
-  .report-filters .el-date-picker {
-    width: 150px;
-  }
-
-  .metric-value {
-    font-size: 20px;
-  }
-}
+.report-page { max-width: 1220px; margin: 0 auto; padding: 0; }
+.report-header { margin-bottom: 26px; }
+.report-header h1 { margin: 0 0 8px; font-family: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif; font-size: clamp(30px, 3.2vw, 46px); font-weight: 400; letter-spacing: -.045em; line-height: 1.05; }
+.report-desc { margin: 0; color: #77777e; font-size: 14px; line-height: 1.6; }
+.report-section { margin-top: 18px; }
+.report-error .retry-btn { margin-top: 8px; }
+.chart-card { height: 100%; }
+.report-filters .el-form-item__content { flex-wrap: wrap; row-gap: 8px; }
+.stat-cards .el-row { row-gap: 12px; }
+.stat-card { min-height: 132px; border-radius: 10px; }
+.stat-card:hover { border-color: #c8dbcd; }
+.stat-label { color: #75758a; font-size: 12px; letter-spacing: .02em; }
+.stat-value { margin: 12px 0 5px; color: var(--ink); font-family: Georgia, serif; font-size: 30px; font-weight: 400; letter-spacing: -.04em; }
+.stat-change { font-size: 12px; color: #929298; }
+.stat-change.up { color: #13805a; }
+.stat-change.down { color: #c35c49; }
+@media (max-width: 768px) { .report-page { padding: 0; } .report-header h1 { font-size: 32px; } .report-filters .el-select { width: 100%; } .report-filters .el-date-picker { width: 150px; } .metric-value { font-size: 20px; } }

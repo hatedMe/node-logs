@@ -30,22 +30,26 @@ withDefaults(
 
 <style scoped>
 .stat-label {
-  font-size: 13px;
-  color: var(--el-text-color-secondary);
+  font-size: 12px;
+  color: #75758a;
+  letter-spacing: 0.02em;
 }
 .stat-value {
-  font-size: 24px;
-  font-weight: 600;
-  margin: 4px 0;
+  color: var(--ink, #17171c);
+  font-family: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  margin: 12px 0 5px;
 }
 .stat-change {
   font-size: 12px;
-  color: var(--el-text-color-secondary);
+  color: #929298;
 }
 .stat-change.up {
-  color: var(--el-color-danger);
+  color: #13805a;
 }
 .stat-change.down {
-  color: var(--el-color-success);
+  color: #c35c49;
 }
 </style>
