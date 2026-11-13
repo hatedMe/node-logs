@@ -1,0 +1,152 @@
+/* 统一后台布局：左侧菜单 + 顶部上下文 + 内容区；窄屏收起为抽屉菜单。 */
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--el-bg-color-page);
+}
+
+.app-sidebar {
+  width: 208px;
+  flex-shrink: 0;
+  background: var(--el-bg-color);
+  border-right: 1px solid var(--el-border-color-lighter);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-brand {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  font-size: 16px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--el-border-color-lighter);
+}
+
+.side-menu {
+  border-right: none;
+  flex: 1;
+}
+
+.app-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-topbar {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  background: var(--el-bg-color);
+  border-bottom: 1px solid var(--el-border-color-lighter);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.menu-toggle {
+  display: none;
+}
+
+.app-crumbs {
+  white-space: nowrap;
+}
+
+.topbar-context {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.site-select {
+  width: 190px;
+}
+
+.preset-select {
+  width: 110px;
+}
+
+.topbar-date {
+  width: 140px;
+}
+
+.date-sep {
+  font-size: 12px;
+  color: var(--el-text-color-secondary);
+  white-space: nowrap;
+}
+
+.app-content {
+  flex: 1;
+  padding: 16px;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* 模块页通用分段间距与筛选表单换行（与 report.css 风格一致）。 */
+.module-page .module-section {
+  margin-top: 12px;
+}
+
+.module-page .module-header h2 {
+  margin: 0 0 4px;
+  font-size: 18px;
+}
+
+.module-page .module-header p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--el-text-color-secondary);
+}
+
+.module-filters .el-form-item__content {
+  flex-wrap: wrap;
+  row-gap: 8px;
+}
+
+@media (max-width: 900px) {
+  .app-sidebar {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+  }
+
+  .app-topbar {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 8px 12px;
+    row-gap: 8px;
+  }
+
+  .topbar-context {
+    width: 100%;
+    margin-left: 0;
+    flex-wrap: wrap;
+  }
+
+  .site-select,
+  .preset-select {
+    flex: 1;
+    min-width: 130px;
+  }
+
+  .topbar-date {
+    width: 140px;
+  }
+
+  .app-content {
+    padding: 8px;
+  }
+}

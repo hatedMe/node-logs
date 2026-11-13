@@ -1,0 +1,58 @@
+/* PV/UV 报表页面样式：桌面双栏，窄屏单栏。 */
+
+.report-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.report-header h1 {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+
+.report-desc {
+  margin: 0;
+  font-size: 13px;
+  color: var(--el-text-color-secondary);
+}
+
+.report-section {
+  margin-top: 12px;
+}
+
+.report-error .retry-btn {
+  margin-top: 8px;
+}
+
+.chart-card {
+  height: 100%;
+}
+
+/* 筛选区：表单项内容允许换行，避免窄屏溢出。 */
+.report-filters .el-form-item__content {
+  flex-wrap: wrap;
+  row-gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .report-page {
+    padding: 8px;
+  }
+
+  .report-header h1 {
+    font-size: 17px;
+  }
+
+  .report-filters .el-select {
+    width: 100%;
+  }
+
+  .report-filters .el-date-picker {
+    width: 150px;
+  }
+
+  .metric-value {
+    font-size: 20px;
+  }
+}
