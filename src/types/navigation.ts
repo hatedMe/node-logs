@@ -23,6 +23,86 @@ export interface MenuItem {
   desc: string
 }
 
+export interface NavigationChild {
+  key: string
+  label: string
+  url: string
+  /** 对应现有报表页面的顶层模块。 */
+  parentKey: MenuKey
+}
+
+export interface NavigationGroup {
+  key: string
+  label: string
+  children: NavigationChild[]
+}
+
+const TONGJI_BASE = 'https://tongji.baidu.com/main/overview/demo'
+const demoUrl = (path: string): string => `${TONGJI_BASE}/${path}?siteId=16847648`
+
+/** 百度统计演示站点的主菜单，URL 与接口返回的菜单保持一致。 */
+export const NAVIGATION_GROUPS: NavigationGroup[] = [
+  {
+    key: 'overview',
+    label: '网站概况',
+    children: [{ key: 'overview', label: '网站概况', parentKey: 'overview', url: demoUrl('overview/index') }]
+  },
+  {
+    key: 'traffic',
+    label: '流量分析',
+    children: [
+      { key: 'traffic-latest', label: '实时访客', parentKey: 'traffic', url: demoUrl('trend/latest') },
+      { key: 'traffic-time', label: '趋势分析', parentKey: 'traffic', url: demoUrl('trend/time') }
+    ]
+  },
+  {
+    key: 'source',
+    label: '来源分析',
+    children: [
+      { key: 'source-all', label: '全部来源', parentKey: 'source', url: demoUrl('source/all') },
+      { key: 'source-engine', label: '搜索引擎', parentKey: 'source', url: demoUrl('source/engine') },
+      { key: 'source-searchword', label: '搜索词', parentKey: 'source', url: demoUrl('source/searchword') },
+      { key: 'source-link', label: '外部链接', parentKey: 'source', url: demoUrl('source/link') },
+      { key: 'source-inner', label: '站内来源', parentKey: 'source', url: demoUrl('source/inner') }
+    ]
+  },
+  {
+    key: 'visit',
+    label: '访问分析',
+    children: [
+      { key: 'visit-toppage', label: '受访页面', parentKey: 'visit', url: demoUrl('visit/toppage') },
+      { key: 'visit-landingpage', label: '入口页面', parentKey: 'visit', url: demoUrl('visit/landingpage') },
+      { key: 'visit-topdomain', label: '受访域名', parentKey: 'visit', url: demoUrl('visit/topdomain') },
+      { key: 'visit-pageclick', label: '页面点击图', parentKey: 'visit', url: demoUrl('custom/pageclick') },
+      { key: 'visit-flow', label: '页面上下游', parentKey: 'visit', url: demoUrl('custom/flow') },
+      { key: 'visit-event-track', label: '事件分析', parentKey: 'visit', url: demoUrl('custom/event_track') },
+      { key: 'visit-subdir', label: '子目录', parentKey: 'visit', url: demoUrl('custom/subdir') }
+    ]
+  },
+  {
+    key: 'conversion',
+    label: '转化分析',
+    children: [
+      { key: 'conversion-overview', label: '转化概况', parentKey: 'conversion', url: demoUrl('trans/overview') },
+      { key: 'conversion-path', label: '转化路径', parentKey: 'conversion', url: demoUrl('custom/newpath') }
+    ]
+  },
+  {
+    key: 'visitor',
+    label: '访客分析',
+    children: [
+      { key: 'visitor-district', label: '地域分布', parentKey: 'visitor', url: demoUrl('visit/district') },
+      { key: 'visitor-client', label: '系统环境', parentKey: 'visitor', url: demoUrl('visit/client') },
+      { key: 'visitor-type', label: '新老访客', parentKey: 'visitor', url: demoUrl('visit/type') }
+    ]
+  }
+]
+
+export const NAVIGATION_ITEMS = NAVIGATION_GROUPS.flatMap((group) => group.children)
+// 便于菜单相关代码按语义引用；保留 NAVIGATION_* 名称供路由层使用。
+export const MENU_GROUPS = NAVIGATION_GROUPS
+export const MENU_LINKS = NAVIGATION_ITEMS
+
 export const MENU_ITEMS: MenuItem[] = [
   { key: 'overview', label: '网站概况', path: 'overview', desc: '汇总网站运营表现与 TOP 榜单' },
   { key: 'promotion', label: '百度推广', path: 'promotion', desc: '搜索/网盟推广从点击到转化的效果' },
