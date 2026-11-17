@@ -4,8 +4,8 @@ import { mount } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
 import ElementPlus, { ElMessage } from 'element-plus'
 import App from '../App.vue'
-import FilterBar from '../components/common/FilterBar.vue'
-import { MENU_ITEMS } from '../types/navigation'
+import ReportFilterStrip from '../components/report/ReportFilterStrip.vue'
+import { NAVIGATION_GROUPS, NAVIGATION_ITEMS } from '../types/navigation'
 import { resetHashRoute } from '../composables/useHashRoute'
 import { resetAppContext, useAppContext } from '../composables/useAppContext'
 import { resetMockScenario, setMockScenario } from '../mocks/report'
@@ -55,54 +55,61 @@ function crumbsText(wrapper: { find: (s: string) => { text: () => string } }): s
   return wrapper.find('[data-testid="breadcrumb"]').text()
 }
 
+function sideItem(wrapper: VueWrapper, label: string) {
+  return wrapper.findAll('.side-menu .el-menu-item').find((i) => i.text().includes(label))
+}
+
 describe('统一布局与路由同步', () => {
-  it('默认首屏为访客分析 PV/UV 页，侧边栏展示 12 个菜单', async () => {
+  it('默认首屏为网站概况页，侧边栏展示 20 个报表菜单', async () => {
     const wrapper = await mountApp()
     await flush()
     const items = wrapper.findAll('.side-menu .el-menu-item')
-    expect(items).toHaveLength(12)
-    for (const m of MENU_ITEMS) {
-      expect(items.map((i) => i.text())).toContain(m.label)
+    expect(items).toHaveLength(NAVIGATION_ITEMS.length)
+    for (const item of NAVIGATION_ITEMS) {
+      expect(items.map((i) => i.text())).toContain(item.label)
     }
-    expect(crumbsText(wrapper)).toContain('访客分析')
-    expect(wrapper.text()).toContain('PV/UV 统计报表')
-    expect(wrapper.find('.side-menu .el-menu-item.is-active').text()).toContain('访客分析')
+    // 多子项菜单折叠为菜单组标题
+    expect(wrapper.findAll('.side-menu .el-sub-menu__title')).toHaveLength(
+      NAVIGATION_GROUPS.filter((g) => g.children.length > 1).length
+    )
+    expect(crumbsText(wrapper)).toContain('网站概况')
+    expect(wrapper.find('[data-testid="view-overview"]').exists()).toBe(true)
+    expect(wrapper.text()).toContain('核心指标')
+    expect(wrapper.find('.side-menu .el-menu-item.is-active').text()).toContain('网站概况')
   })
 
   it('点击侧边菜单切换页面，路由/面包屑/高亮同步', async () => {
     const wrapper = await mountApp()
     await flush()
-    const target = wrapper
-      .findAll('.side-menu .el-menu-item')
-      .find((i) => i.text().includes('网站概况'))
-    await target?.trigger('click')
+    await sideItem(wrapper, '搜索词')?.trigger('click')
     await flush()
-    expect(window.location.hash).toBe('#/overview')
-    expect(crumbsText(wrapper)).toContain('网站概况')
-    expect(wrapper.find('.side-menu .el-menu-item.is-active').text()).toContain('网站概况')
-    expect(wrapper.text()).toContain('TOP 来源')
-    expect(wrapper.find('[data-testid="view-overview"]').exists()).toBe(true)
+    expect(window.location.hash).toBe('#/source/searchword')
+    expect(crumbsText(wrapper)).toContain('来源分析')
+    expect(crumbsText(wrapper)).toContain('搜索词')
+    expect(wrapper.find('.side-menu .el-menu-item.is-active').text()).toContain('搜索词')
+    expect(wrapper.find('[data-testid="view-source-searchword"]').exists()).toBe(true)
   })
 
   it('浏览器 hash 变化同步回菜单与页面', async () => {
     const wrapper = await mountApp()
     await flush()
-    window.location.hash = '#/traffic'
+    window.location.hash = '#/visit/toppage'
     window.dispatchEvent(new Event('hashchange'))
     await flush()
-    expect(wrapper.find('.side-menu .el-menu-item.is-active').text()).toContain('流量分析')
-    expect(crumbsText(wrapper)).toContain('流量分析')
-    expect(wrapper.text()).toContain('实时访客')
+    expect(wrapper.find('.side-menu .el-menu-item.is-active').text()).toContain('受访页面')
+    expect(crumbsText(wrapper)).toContain('受访页面')
+    expect(wrapper.find('[data-testid="view-visit-toppage"]').exists()).toBe(true)
+    expect(wrapper.text()).toContain('受访页面明细')
   })
 
-  it('未知路由回退到访客分析页', async () => {
+  it('未知路由回退到网站概况页', async () => {
     const wrapper = await mountApp()
     await flush()
     window.location.hash = '#/no-such-page'
     window.dispatchEvent(new Event('hashchange'))
     await flush()
-    expect(wrapper.text()).toContain('PV/UV 统计报表')
-    expect(wrapper.find('.side-menu .el-menu-item.is-active').text()).toContain('访客分析')
+    expect(wrapper.find('[data-testid="view-overview"]').exists()).toBe(true)
+    expect(wrapper.find('.side-menu .el-menu-item.is-active').text()).toContain('网站概况')
   })
 
   it('窄屏抽屉菜单可打开并导航，导航后自动关闭', async () => {
@@ -113,21 +120,19 @@ describe('统一布局与路由同步', () => {
     await wrapper.find('[data-testid="menu-toggle"]').trigger('click')
     await flush(60)
     const drawerItems = wrapper.findAll('[data-testid="drawer-menu"] .el-menu-item')
-    expect(drawerItems).toHaveLength(12)
-    await drawerItems.find((el) => el.text().includes('转化分析'))?.trigger('click')
+    expect(drawerItems).toHaveLength(NAVIGATION_ITEMS.length)
+    await drawerItems.find((el) => el.text().includes('转化概况'))?.trigger('click')
     await flush()
-    expect(window.location.hash).toBe('#/conversion')
+    expect(window.location.hash).toBe('#/trans/overview')
+    expect(wrapper.find('[data-testid="view-conversion-overview"]').exists()).toBe(true)
     expect(wrapper.text()).toContain('转化漏斗')
     expect(wrapper.find('[data-testid="drawer-menu"]').exists()).toBe(false)
   })
 })
 
 describe('顶部站点/日期上下文', () => {
-  it('站点切换写入全局上下文，模块页自动重查', async () => {
+  it('站点切换写入全局上下文，报表页自动重查', async () => {
     const wrapper = await mountApp()
-    await flush()
-    window.location.hash = '#/overview'
-    window.dispatchEvent(new Event('hashchange'))
     await flush()
     expect(wrapper.text()).toContain('网站概况')
 
@@ -137,33 +142,30 @@ describe('顶部站点/日期上下文', () => {
     await flush()
     expect(useAppContext().siteId.value).toBe('5503017')
     // 重查后内容仍完整（mock 按站点种子变化但形状不变）
-    expect(wrapper.text()).toContain('TOP 搜索词')
+    expect(wrapper.text()).toContain('Top10 搜索词')
     expect(wrapper.findAll('tbody tr.el-table__row').length).toBeGreaterThan(0)
   })
 
-  it('顶部日期预设同步到模块页筛选', async () => {
+  it('顶部日期预设同步到报表页筛选', async () => {
     const wrapper = await mountApp()
     await flush()
-    window.location.hash = '#/source'
+    window.location.hash = '#/source/searchword'
     window.dispatchEvent(new Event('hashchange'))
     await flush()
     const presetSelect = wrapper.findAllComponents({ name: 'ElSelect' })[1]
     presetSelect.vm.$emit('update:modelValue', 'last30')
     await flush()
     expect(useAppContext().rangePreset.value).toBe('last30')
-    const filterBar = wrapper.findComponent(FilterBar)
-    expect(filterBar.props('filters').rangePreset).toBe('last30')
+    const filterStrip = wrapper.findComponent(ReportFilterStrip)
+    expect(filterStrip.props('filters').rangePreset).toBe('last30')
     expect(wrapper.text()).toContain('搜索词明细')
   })
 })
 
-describe('模块页在布局内的通用交互', () => {
+describe('报表页在布局内的通用交互', () => {
   it('错误重试：失败显示重试入口，恢复后展示数据', async () => {
     setModuleMockScenario({ mode: 'error', delayMs: 1 })
     const wrapper = await mountApp()
-    await flush()
-    window.location.hash = '#/overview'
-    window.dispatchEvent(new Event('hashchange'))
     await flush()
     expect(wrapper.text()).toContain('模块数据加载失败')
     setModuleMockScenario({ mode: 'ok', delayMs: 1 })
@@ -175,9 +177,6 @@ describe('模块页在布局内的通用交互', () => {
 
   it('导出按钮触发 CSV 下载', async () => {
     const wrapper = await mountApp()
-    await flush()
-    window.location.hash = '#/overview'
-    window.dispatchEvent(new Event('hashchange'))
     await flush()
     const createObjectURL = vi.fn(() => 'blob:mock')
     const revokeObjectURL = vi.fn()

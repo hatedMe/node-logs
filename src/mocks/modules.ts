@@ -1,4 +1,5 @@
-// 各统计模块的 mock 数据生成器（纯函数）：唯一允许出现新模块模拟数据的地方。
+// 各统计模块的 mock 数据生成器（纯函数）：新模块模拟数据只能出现在本文件与
+// mocks/reports.ts（20 个还原报表页）里，其余地方禁止散写假数据。
 // 规则：种子 = 模块名 + 查询上下文（站点/日期/来源/设备/关键词），
 // 同条件稳定返回，不同条件稳定变化；关键词做真实子串过滤。
 
@@ -25,6 +26,7 @@ import type {
 import { floatBetween, intBetween, rngFor } from './seed'
 import { CUSTOM_METRIC_LABELS } from '../types/modules'
 import type { MetricValues, TrendPoint } from '../types/report'
+import type { ReportPageData } from '../types/reports'
 import { eachDay } from '../utils/date'
 
 export const MODULE_MOCK_ERROR_MESSAGE = '模块数据加载失败，请重试'
@@ -67,19 +69,19 @@ const SOURCE_SCALE: Record<string, number> = {
 
 const DEVICE_SCALE: Record<string, number> = { all: 1, pc: 0.62, mobile: 0.38 }
 
-function scaleOf(ctx: ModuleQueryContext): number {
+export function scaleOf(ctx: ModuleQueryContext): number {
   return (SOURCE_SCALE[ctx.source] ?? 1) * (DEVICE_SCALE[ctx.device] ?? 1)
 }
 
-function seedKey(module: string, ctx: ModuleQueryContext): string {
+export function seedKey(module: string, ctx: ModuleQueryContext): string {
   return [module, ctx.siteId, ctx.startDate, ctx.endDate, ctx.source, ctx.device].join('|')
 }
 
-function fmtInt(n: number): string {
+export function fmtInt(n: number): string {
   return String(Math.max(0, Math.round(n)))
 }
 
-function fmtPct(ratio: number): string {
+export function fmtPct(ratio: number): string {
   return `${(ratio * 100).toFixed(2)}%`
 }
 
@@ -89,7 +91,7 @@ function changeText(rng: () => number): { change: string; up: boolean } {
   return { change: `${up ? '+' : ''}${(v * 100).toFixed(2)}%`, up }
 }
 
-function card(
+export function card(
   rng: () => number,
   key: string,
   label: string,
@@ -122,6 +124,7 @@ export function applyEmptyMode(data: HeatmapData): HeatmapData
 export function applyEmptyMode(data: CustomReportData): CustomReportData
 export function applyEmptyMode(data: ExportData): ExportData
 export function applyEmptyMode(data: AccountData): AccountData
+export function applyEmptyMode(data: ReportPageData): ReportPageData
 export function applyEmptyMode(data: object): object {
   if (scenario.mode !== 'empty') return data
   const out: Record<string, unknown> = { ...(data as Record<string, unknown>) }
@@ -138,7 +141,7 @@ export function applyEmptyMode(data: object): object {
   return out
 }
 
-function rankItems(
+export function rankItems(
   rng: () => number,
   names: string[],
   base: number,
@@ -155,7 +158,7 @@ function rankItems(
     .sort((a, b) => b.value - a.value)
 }
 
-function funnelSteps(rng: () => number, labels: string[], first: number): FunnelStep[] {
+export function funnelSteps(rng: () => number, labels: string[], first: number): FunnelStep[] {
   let current = first
   return labels.map((label, i) => {
     if (i > 0) current = Math.max(1, Math.round(current * (0.18 + rng() * 0.5)))
@@ -168,7 +171,7 @@ function funnelSteps(rng: () => number, labels: string[], first: number): Funnel
   })
 }
 
-function filterByKeyword<T>(rows: T[], keyword: string, pick: (r: T) => string): T[] {
+export function filterByKeyword<T>(rows: T[], keyword: string, pick: (r: T) => string): T[] {
   const kw = keyword.trim().toLowerCase()
   if (!kw) return rows
   return rows.filter((r) => pick(r).toLowerCase().includes(kw))
@@ -178,7 +181,7 @@ function filterByKeyword<T>(rows: T[], keyword: string, pick: (r: T) => string):
  * 生成区间内每日 PV/UV 趋势点（供 TrendChart 复用）。
  * 天数上限 90，避免超长自定义区间拖慢渲染；compareValues 恒为 null（新模块暂无对比）。
  */
-function trendPoints(module: string, ctx: ModuleQueryContext, basePv: number): TrendPoint[] {
+export function trendPoints(module: string, ctx: ModuleQueryContext, basePv: number): TrendPoint[] {
   const rng = rngFor(`${seedKey(module, ctx)}|trend`)
   const scale = scaleOf(ctx)
   return eachDay(ctx.startDate, ctx.endDate, 90).map((date) => {

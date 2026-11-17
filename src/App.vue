@@ -1,36 +1,52 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { Component } from 'vue'
-import type { MenuKey } from './types/navigation'
+import type { ReportPageKey } from './types/navigation'
 import { useHashRoute } from './composables/useHashRoute'
 import AppLayout from './components/layout/AppLayout.vue'
-import OverviewView from './views/OverviewView.vue'
-import PromotionView from './views/PromotionView.vue'
-import TrafficView from './views/TrafficView.vue'
-import SourceView from './views/SourceView.vue'
-import VisitView from './views/VisitView.vue'
-import ConversionView from './views/ConversionView.vue'
-import VisitorView from './views/VisitorView.vue'
-import OptimizeView from './views/OptimizeView.vue'
-import HeatmapView from './views/HeatmapView.vue'
-import CustomView from './views/CustomView.vue'
-import ExportView from './views/ExportView.vue'
-import AccountView from './views/AccountView.vue'
+import OverviewIndexView from './views/reports/OverviewIndexView.vue'
+import TrafficLatestView from './views/reports/TrafficLatestView.vue'
+import TrafficTimeView from './views/reports/TrafficTimeView.vue'
+import SourceAllView from './views/reports/SourceAllView.vue'
+import SourceEngineView from './views/reports/SourceEngineView.vue'
+import SourceSearchWordView from './views/reports/SourceSearchWordView.vue'
+import SourceLinkView from './views/reports/SourceLinkView.vue'
+import SourceInnerView from './views/reports/SourceInnerView.vue'
+import VisitTopPageView from './views/reports/VisitTopPageView.vue'
+import VisitLandingPageView from './views/reports/VisitLandingPageView.vue'
+import VisitTopDomainView from './views/reports/VisitTopDomainView.vue'
+import VisitPageClickView from './views/reports/VisitPageClickView.vue'
+import VisitFlowView from './views/reports/VisitFlowView.vue'
+import VisitEventTrackView from './views/reports/VisitEventTrackView.vue'
+import VisitSubdirView from './views/reports/VisitSubdirView.vue'
+import ConversionOverviewView from './views/reports/ConversionOverviewView.vue'
+import ConversionPathView from './views/reports/ConversionPathView.vue'
+import VisitorDistrictView from './views/reports/VisitorDistrictView.vue'
+import VisitorClientView from './views/reports/VisitorClientView.vue'
+import VisitorTypeView from './views/reports/VisitorTypeView.vue'
 
-// 全同步 import：首屏（访客分析 PV/UV 页）无懒加载延迟，保证旧测试的同步断言稳定。
-const VIEW_MAP: Record<MenuKey, Component> = {
-  overview: OverviewView,
-  promotion: PromotionView,
-  traffic: TrafficView,
-  source: SourceView,
-  visit: VisitView,
-  conversion: ConversionView,
-  visitor: VisitorView,
-  optimize: OptimizeView,
-  heatmap: HeatmapView,
-  custom: CustomView,
-  export: ExportView,
-  account: AccountView
+// 全同步 import：报表页首屏无懒加载延迟，保证测试的同步断言稳定。
+const VIEW_MAP: Record<ReportPageKey, Component> = {
+  overview: OverviewIndexView,
+  'traffic-latest': TrafficLatestView,
+  'traffic-time': TrafficTimeView,
+  'source-all': SourceAllView,
+  'source-engine': SourceEngineView,
+  'source-searchword': SourceSearchWordView,
+  'source-link': SourceLinkView,
+  'source-inner': SourceInnerView,
+  'visit-toppage': VisitTopPageView,
+  'visit-landingpage': VisitLandingPageView,
+  'visit-topdomain': VisitTopDomainView,
+  'visit-pageclick': VisitPageClickView,
+  'visit-flow': VisitFlowView,
+  'visit-event-track': VisitEventTrackView,
+  'visit-subdir': VisitSubdirView,
+  'conversion-overview': ConversionOverviewView,
+  'conversion-path': ConversionPathView,
+  'visitor-district': VisitorDistrictView,
+  'visitor-client': VisitorClientView,
+  'visitor-type': VisitorTypeView
 }
 
 const { route, navigate } = useHashRoute()
